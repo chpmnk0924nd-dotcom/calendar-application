@@ -14,6 +14,9 @@ services:
         sync: false
       - key: VITE_SUPABASE_ANON_KEY
         sync: false
+      # Optional: external link shown in the UI
+      - key: VITE_RECIPE_APP_URL
+        sync: false
     routes:
       # SPA fallback so deep links like /?date=... or /calendar work
       - type: rewrite

@@ -120,6 +120,10 @@ export function AppShell() {
   const timeZone = useCalendarStore((s) => s.timeZone)
   const setTimeZone = useCalendarStore((s) => s.setTimeZone)
 
+  const recipeAppUrl =
+    (import.meta.env.VITE_RECIPE_APP_URL as string | undefined) ??
+    'https://recipe-app-7pzv.onrender.com/'
+
   const [now, setNow] = useState(() => new Date())
 
   useEffect(() => {
@@ -183,6 +187,16 @@ export function AppShell() {
               >
                 Todo
               </NavLink>
+
+              <a
+                href={recipeAppUrl}
+                target="_blank"
+                rel="noreferrer"
+                className={cn(tabBase, 'text-slate-300 hover:bg-slate-800/50 hover:text-slate-100')}
+                title="Open Recipe Application"
+              >
+                Recipes
+              </a>
             </nav>
           </div>
 

@@ -13,6 +13,8 @@ Steps:
 - When prompted, set environment variables (optional, only if you want Supabase persistence):
   - `VITE_SUPABASE_URL`
   - `VITE_SUPABASE_ANON_KEY`
+ - Optional UI link:
+   - `VITE_RECIPE_APP_URL` (e.g. `https://recipe-app-7pzv.onrender.com/`)
 
 Notes:
 - Client-side routing is handled via a rewrite to `/index.html` in [render.yaml](render.yaml).
