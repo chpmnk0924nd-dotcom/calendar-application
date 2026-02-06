@@ -1,5 +1,23 @@
 # React + TypeScript + Vite
 
+## Deploy to Render
+
+This app is a Vite single-page app (SPA), so it can be hosted as a Render **Static Site**.
+
+- The repo includes a Render blueprint: [render.yaml](render.yaml)
+- Build command: `npm ci && npm run build`
+- Publish directory: `dist`
+
+Steps:
+- In Render: **New** → **Blueprint** → connect/select this GitHub repo.
+- When prompted, set environment variables (optional, only if you want Supabase persistence):
+  - `VITE_SUPABASE_URL`
+  - `VITE_SUPABASE_ANON_KEY`
+
+Notes:
+- Client-side routing is handled via a rewrite to `/index.html` in [render.yaml](render.yaml).
+- You can host this “next to” your Recipe app by creating it as a separate service in the same Render account.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

@@ -1,0 +1,21 @@
+# Render Blueprint for Cala (Vite static site)
+# Docs: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: calendar-application
+    runtime: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    pullRequestPreviewsEnabled: true
+    envVars:
+      # Optional: only needed if you want Supabase persistence in production
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_ANON_KEY
+        sync: false
+    routes:
+      # SPA fallback so deep links like /?date=... or /calendar work
+      - type: rewrite
+        source: /*
+        destination: /index.html
