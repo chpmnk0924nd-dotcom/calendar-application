@@ -1,0 +1,559 @@
+/*
+  FullCalendar v6+ packages do not ship CSS in npm in this setup.
+  We load the base FullCalendar CSS via CDN in index.html, and keep theme overrides here.
+*/
+
+/* Subtle dark theme tweaks */
+.fc {
+  --fc-border-color: rgba(148, 163, 184, 0.32);
+  --fc-page-bg-color: transparent;
+  --fc-today-bg-color: rgba(56, 189, 248, 0.14);
+  --fc-neutral-bg-color: rgba(148, 163, 184, 0.08);
+  --fc-list-event-hover-bg-color: rgba(148, 163, 184, 0.10);
+  --fc-button-bg-color: rgba(15, 23, 42, 0.9);
+  --fc-button-border-color: rgba(148, 163, 184, 0.25);
+  --fc-button-text-color: rgb(226, 232, 240);
+  --fc-button-hover-bg-color: rgba(30, 41, 59, 0.95);
+  --fc-button-hover-border-color: rgba(148, 163, 184, 0.35);
+  --fc-button-active-bg-color: rgba(14, 116, 144, 0.9);
+  --fc-button-active-border-color: rgba(56, 189, 248, 0.55);
+}
+
+/* Make the calendar grid lines feel more "neon" */
+.fc .fc-scrollgrid {
+  box-shadow:
+    0 0 0 1px rgba(148, 163, 184, 0.18),
+    0 0 26px rgba(34, 211, 238, 0.10),
+    0 0 46px rgba(168, 85, 247, 0.07);
+}
+
+.fc .fc-toolbar-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.fc .fc-col-header-cell-cushion {
+  padding: 10px 6px;
+  font-weight: 600;
+  color: rgb(203, 213, 225);
+}
+
+.fc .fc-daygrid-day-number {
+  padding: 8px;
+  color: rgb(148, 163, 184);
+}
+
+.fc .fc-daygrid-event {
+  border-radius: 10px;
+  padding: 2px 6px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Prevent long custom eventContent from visually bleeding into adjacent days */
+.fc .fc-daygrid-event-harness,
+.fc .fc-daygrid-event-harness-abs {
+  max-width: 100%;
+}
+
+.fc .fc-daygrid-event .fc-event-main,
+.fc .fc-daygrid-event .fc-event-main-frame,
+.fc .fc-timegrid-event .fc-event-main,
+.fc .fc-timegrid-event .fc-event-main-frame {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* --- Motion / feel layer -------------------------------------------------- */
+
+.cala-calendar-surface {
+  position: relative;
+  overflow: hidden;
+}
+
+.cala-calendar-surface::before {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  pointer-events: none;
+  opacity: 0.28;
+  filter: blur(70px);
+  background:
+    radial-gradient(45% 35% at 22% 18%, rgba(34, 211, 238, 0.22), transparent 70%),
+    radial-gradient(40% 35% at 78% 25%, rgba(168, 85, 247, 0.18), transparent 70%),
+    radial-gradient(35% 35% at 55% 78%, rgba(99, 102, 241, 0.14), transparent 70%);
+  transform: translate3d(0, 0, 0);
+  animation: cala-ambient-drift 10s ease-in-out infinite;
+}
+
+.cala-calendar-surface > .fc {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes cala-ambient-drift {
+  0% {
+    transform: translate3d(-1.5%, -1.5%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(1.75%, 1.25%, 0) scale(1.04);
+  }
+  100% {
+    transform: translate3d(-1.5%, -1.5%, 0) scale(1);
+  }
+}
+
+/* Day hover (subtle) */
+.fc .fc-daygrid-day {
+  transition: background-color 140ms ease;
+}
+
+.fc .fc-daygrid-day:hover {
+  background-color: rgba(148, 163, 184, 0.06);
+}
+
+/* Today glow (dayGrid + timeGrid + list) */
+.fc .fc-daygrid-day.fc-day-today,
+.fc .fc-timegrid-col.fc-day-today,
+.fc .fc-list-day.fc-day-today {
+  position: relative;
+}
+
+.fc .fc-daygrid-day.fc-day-today::before,
+.fc .fc-timegrid-col.fc-day-today::before,
+.fc .fc-list-day.fc-day-today::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: 14px;
+  pointer-events: none;
+  opacity: 0.26;
+  background:
+    radial-gradient(60% 55% at 40% 30%, rgba(34, 211, 238, 0.55), transparent 70%),
+    radial-gradient(55% 60% at 70% 75%, rgba(255, 79, 216, 0.22), transparent 70%),
+    linear-gradient(180deg, rgba(34, 211, 238, 0.12), transparent 70%);
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.18) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 0 42px rgba(34, 211, 238, 0.18),
+    0 0 70px rgba(34, 211, 238, 0.10);
+  filter: saturate(1.25);
+  animation: cala-today-pulse 2.8s ease-in-out infinite;
+}
+
+/* Ensure the overlay sits behind content */
+.fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-frame,
+.fc .fc-timegrid-col.fc-day-today .fc-timegrid-col-frame {
+  position: relative;
+  z-index: 1;
+}
+
+.fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+  color: rgb(226, 232, 240);
+  text-shadow:
+    0 0 10px rgba(34, 211, 238, 0.35),
+    0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.fc .fc-col-header-cell.fc-day-today .fc-col-header-cell-cushion {
+  color: rgb(226, 232, 240);
+  text-shadow: 0 0 14px rgba(34, 211, 238, 0.28);
+}
+
+@keyframes cala-today-pulse {
+  0%,
+  100% {
+    opacity: 0.22;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.34;
+    transform: scale(1.01);
+  }
+}
+
+/* Glowing, animated "now" indicator (week/day views) */
+.fc .fc-timegrid-now-indicator-line {
+  border-color: rgba(34, 211, 238, 0.95) !important;
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.25),
+    0 0 18px rgba(34, 211, 238, 0.35);
+  animation: cala-nowline-pulse 2.3s ease-in-out infinite;
+}
+
+.fc .fc-timegrid-now-indicator-arrow {
+  border-left-color: rgba(34, 211, 238, 0.95) !important;
+  filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.35));
+}
+
+@keyframes cala-nowline-pulse {
+  0%,
+  100% {
+    opacity: 0.85;
+    box-shadow:
+      0 0 0 1px rgba(34, 211, 238, 0.22),
+      0 0 14px rgba(34, 211, 238, 0.28);
+  }
+  50% {
+    opacity: 1;
+    box-shadow:
+      0 0 0 1px rgba(34, 211, 238, 0.28),
+      0 0 26px rgba(34, 211, 238, 0.45);
+  }
+}
+
+/* Event motion: hover lift + focus/dim */
+.fc .cala-event {
+  position: relative;
+  transform: translate3d(0, 0, 0);
+  background-color: var(--cala-event-bg, rgba(34, 211, 238, 1)) !important;
+  border-color: var(--cala-event-bg, rgba(34, 211, 238, 1)) !important;
+  color: var(--cala-event-fg, rgb(226, 232, 240)) !important;
+  filter:
+    drop-shadow(0 0 16px color-mix(in srgb, var(--cala-event-bg, rgba(34, 211, 238, 1)) 28%, transparent))
+    drop-shadow(0 0 18px rgba(0, 0, 0, 0.32));
+  transition:
+    transform 130ms ease,
+    filter 160ms ease,
+    opacity 140ms ease;
+  will-change: transform, filter, opacity;
+}
+
+.fc .cala-event .fc-event-main,
+.fc .cala-event .fc-event-main-frame {
+  color: var(--cala-event-fg, inherit) !important;
+}
+
+/* Patterns: holidays vs user events */
+.fc .cala-event--holiday {
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.28) 0px,
+    rgba(255, 255, 255, 0.28) 7px,
+    rgba(255, 255, 255, 0) 7px,
+    rgba(255, 255, 255, 0) 14px
+  );
+  background-blend-mode: overlay;
+}
+
+.fc .cala-event--user {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.22) 1px, rgba(255, 255, 255, 0) 1px);
+  background-size: 10px 10px;
+  background-blend-mode: overlay;
+}
+
+  /* Category filter “orb” animation layer */
+  .cala-orb-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 60;
+  }
+
+  .cala-orb {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    margin-left: -6px;
+    margin-top: -6px;
+    border-radius: 9999px;
+    background: var(--orb-color, rgba(34, 211, 238, 1));
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.16),
+      0 0 22px color-mix(in srgb, var(--orb-color, rgba(34, 211, 238, 1)) 70%, transparent),
+      0 0 42px color-mix(in srgb, var(--orb-color, rgba(34, 211, 238, 1)) 45%, transparent);
+    filter: saturate(1.1);
+  }
+
+  .cala-spark-burst {
+    position: absolute;
+    width: 0;
+    height: 0;
+    transform: translate(-50%, -50%);
+  }
+
+  .cala-spark-burst::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 140px;
+    height: 140px;
+    margin-left: -70px;
+    margin-top: -70px;
+    border-radius: 9999px;
+    background:
+      radial-gradient(
+        circle at 50% 50%,
+        color-mix(in srgb, var(--spark-color, rgba(34, 211, 238, 1)) 42%, transparent) 0%,
+        transparent 64%
+      );
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.10) inset,
+      0 0 46px color-mix(in srgb, var(--spark-color, rgba(34, 211, 238, 1)) 55%, transparent),
+      0 0 90px color-mix(in srgb, var(--spark-color, rgba(34, 211, 238, 1)) 32%, transparent);
+    opacity: 0;
+    transform: scale(0.65);
+    animation: calaSparkFlash 520ms cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+  }
+
+  @keyframes calaSparkFlash {
+    0% {
+      opacity: 0;
+      transform: scale(0.55);
+    }
+    18% {
+      opacity: 0.55;
+      transform: scale(1.05);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.25);
+    }
+  }
+
+  .cala-spark {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 22px;
+    margin-left: -2px;
+    margin-top: -11px;
+    border-radius: 9999px;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--spark-color, rgba(34, 211, 238, 1)) 92%, white),
+      color-mix(in srgb, var(--spark-color, rgba(34, 211, 238, 1)) 35%, transparent)
+    );
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.12),
+      0 0 22px color-mix(in srgb, var(--spark-color, rgba(34, 211, 238, 1)) 78%, transparent),
+      0 0 52px color-mix(in srgb, var(--spark-color, rgba(34, 211, 238, 1)) 48%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cala-orb {
+      display: none;
+    }
+  }
+
+  /* Day-cell burst fill when a category is enabled */
+  .fc .fc-daygrid-day.cala-day-burst {
+    position: relative;
+  }
+
+  .fc .fc-daygrid-day.cala-day-burst::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 12px;
+    background: var(--cala-burst-color, rgba(34, 211, 238, 1));
+    opacity: 0;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 0 30px color-mix(in srgb, var(--cala-burst-color, rgba(34, 211, 238, 1)) 35%, transparent);
+    transform: scale(0.98);
+    animation: calaDayBurst 520ms cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+  }
+
+  @keyframes calaDayBurst {
+    0% {
+      opacity: 0;
+      transform: scale(0.985);
+    }
+    22% {
+      opacity: 0.14;
+      transform: scale(1);
+    }
+    60% {
+      opacity: 0;
+      transform: scale(1.01);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.01);
+    }
+  }
+
+  /* Day-cell edge glow when an orb lands/explodes */
+  .fc .fc-daygrid-day.cala-day-orb-glow {
+    position: relative;
+  }
+
+  .fc .fc-daygrid-day.cala-day-orb-glow::before {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border-radius: 14px;
+    pointer-events: none;
+    opacity: 0;
+    box-shadow:
+      inset 0 0 0 3px color-mix(in srgb, var(--cala-orb-glow-color, rgba(34, 211, 238, 1)) 82%, transparent),
+      0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 0 36px color-mix(in srgb, var(--cala-orb-glow-color, rgba(34, 211, 238, 1)) 60%, transparent),
+      0 0 90px color-mix(in srgb, var(--cala-orb-glow-color, rgba(34, 211, 238, 1)) 38%, transparent);
+    animation: calaDayOrbGlow 5600ms cubic-bezier(0.2, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes calaDayOrbGlow {
+    0% {
+      opacity: 0;
+      transform: scale(0.995);
+    }
+    8% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    /* 3 slow “breaths” before fading */
+    18% {
+      opacity: 0.62;
+      transform: scale(1);
+    }
+    28% {
+      opacity: 1;
+      transform: scale(1.006);
+    }
+    38% {
+      opacity: 0.62;
+      transform: scale(1);
+    }
+    48% {
+      opacity: 1;
+      transform: scale(1.006);
+    }
+    58% {
+      opacity: 0.62;
+      transform: scale(1);
+    }
+    68% {
+      opacity: 1;
+      transform: scale(1.006);
+    }
+    78% {
+      opacity: 0.6;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.005);
+    }
+  }
+
+/* Custom eventContent layout (pin + time + title) */
+.fc .cala-event-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.fc .cala-event-time {
+  opacity: 0.95;
+  font-variant-numeric: tabular-nums;
+  text-shadow:
+    -1px 0 0 rgba(0, 0, 0, 0.55),
+    1px 0 0 rgba(0, 0, 0, 0.55),
+    0 -1px 0 rgba(0, 0, 0, 0.55),
+    0 1px 0 rgba(0, 0, 0, 0.55),
+    0 2px 10px rgba(0, 0, 0, 0.32),
+    0 0 1px rgba(255, 255, 255, 0.28);
+}
+
+.fc .cala-event-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-shadow:
+    -1px 0 0 rgba(0, 0, 0, 0.6),
+    1px 0 0 rgba(0, 0, 0, 0.6),
+    0 -1px 0 rgba(0, 0, 0, 0.6),
+    0 1px 0 rgba(0, 0, 0, 0.6),
+    0 2px 12px rgba(0, 0, 0, 0.35),
+    0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+/* Allow richer titles in week/day + list views without overflowing. */
+.fc .fc-timegrid-event .cala-event-title,
+.fc .fc-list-event .cala-event-title {
+  white-space: normal;
+  text-overflow: clip;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  line-height: 1.15;
+  max-height: calc(1.15em * 2);
+  /* Subtle fade at the bottom edge for clamped text */
+  -webkit-mask-image: linear-gradient(180deg, #000 86%, transparent);
+  mask-image: linear-gradient(180deg, #000 86%, transparent);
+}
+
+.fc .cala-event-pin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+  opacity: 0.95;
+  flex: 0 0 auto;
+}
+
+.fc .cala-event:hover {
+  transform: translate3d(0, -1px, 0) scale(1.02);
+  filter:
+    drop-shadow(0 0 22px color-mix(in srgb, var(--cala-event-bg, rgba(34, 211, 238, 1)) 52%, transparent))
+    drop-shadow(0 0 24px rgba(0, 0, 0, 0.42));
+  z-index: 5;
+}
+
+.fc .cala-event--dim {
+  opacity: 0.22;
+  filter: saturate(0.6) blur(0.2px);
+}
+
+.fc .cala-event--focus {
+  opacity: 1;
+  filter:
+    drop-shadow(0 0 28px color-mix(in srgb, var(--cala-event-bg, rgba(34, 211, 238, 1)) 58%, transparent))
+    drop-shadow(0 0 34px rgba(0, 0, 0, 0.46));
+}
+
+/* Upcoming soon pulse (next ~2 hours, set in CalendarPage) */
+.fc .cala-event--soon {
+  animation: cala-event-soon-pulse 1.7s ease-in-out infinite;
+}
+
+@keyframes cala-event-soon-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.0);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(34, 211, 238, 0.08);
+  }
+}
+
+/* Prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .cala-calendar-surface::before,
+  .fc .fc-timegrid-now-indicator-line,
+  .fc .cala-event--soon,
+  .fc .fc-daygrid-day.fc-day-today::before,
+  .fc .fc-timegrid-col.fc-day-today::before,
+  .fc .fc-list-day.fc-day-today::before {
+    animation: none !important;
+  }
+
+  .fc .cala-event {
+    transition: none !important;
+  }
+}

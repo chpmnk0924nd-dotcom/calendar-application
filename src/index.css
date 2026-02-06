@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-slate-950 text-slate-100 antialiased;
+  }
+}
+
+@layer components {
+  .cala-timeline-sheen {
+    background: radial-gradient(80% 120% at 50% 0%, rgba(34, 211, 238, 0.12), transparent 60%),
+      radial-gradient(90% 140% at 0% 100%, rgba(255, 79, 216, 0.10), transparent 55%),
+      linear-gradient(90deg, rgba(15, 23, 42, 0.55), rgba(2, 6, 23, 0.20));
+  }
+
+  .cala-now-marker {
+    box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.25), 0 0 22px rgba(34, 211, 238, 0.45);
+    animation: cala-now-pulse 2.4s ease-in-out infinite;
+  }
+
+  .cala-now-cap {
+    box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.25), 0 0 18px rgba(34, 211, 238, 0.55);
+    animation: cala-now-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes cala-now-pulse {
+    0%,
+    100% {
+      filter: saturate(1) brightness(1);
+      opacity: 0.9;
+    }
+
+    50% {
+      filter: saturate(1.25) brightness(1.15);
+      opacity: 1;
+    }
+  }
+}
